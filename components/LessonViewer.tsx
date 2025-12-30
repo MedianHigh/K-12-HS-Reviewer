@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useMemo } from 'react';
 import { LessonContent, Subject, LessonSection, ContentBlock, Example, Difficulty, ReviewQuestion, EducationalLevel, VocabularyItem } from '../types.ts';
 import { geminiService } from '../services/geminiService.ts';
@@ -88,7 +89,8 @@ const ContentRenderer = ({ text, keyTerms, onTermClick, highlightedSet }: { text
   );
 };
 
-const DictionaryCard = ({ item }: { item: VocabularyItem }) => (
+// Fix: Use React.FC to ensure the component type supports the 'key' prop when mapped.
+const DictionaryCard: React.FC<{ item: VocabularyItem }> = ({ item }) => (
   <div className="bg-white p-6 rounded-3xl border border-slate-100 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 group">
     <div className="text-3xl font-black text-indigo-600 mb-2 group-hover:text-indigo-700">{item.term}</div>
     <div className="flex items-center gap-2 mb-4">
