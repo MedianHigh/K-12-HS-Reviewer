@@ -2,8 +2,12 @@ import { GoogleGenAI } from "@google/genai";
 import { LessonContent, LessonSection, ContentBlock, Difficulty, ReviewQuestion, Example, EducationalLevel, VocabularyItem } from "../types.ts";
 
 export class GeminiService {
+  private getClient() {
+    return new GoogleGenAI({ apiKey: process.env.API_KEY });
+  }
+
   async defineTerm(term: string, context: string): Promise<string> {
-    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY || 'FAKE_API_KEY_FOR_DEVELOPMENT' });
+    const ai = this.getClient();
     try {
       const response = await ai.models.generateContent({
         model: 'gemini-3-flash-preview',
@@ -18,7 +22,7 @@ export class GeminiService {
   }
 
   async generateVisual(description: string): Promise<string> {
-    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY || 'FAKE_API_KEY_FOR_DEVELOPMENT' });
+    const ai = this.getClient();
     try {
       const response = await ai.models.generateContent({
         model: 'gemini-2.5-flash-image',
@@ -47,12 +51,12 @@ export class GeminiService {
     melcCode: string,
     focus?: string
   ): Promise<LessonContent> {
-    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY || 'FAKE_API_KEY_FOR_DEVELOPMENT' });
+    const ai = this.getClient();
     const focusPrompt = focus ? `\n\nEMPHASIZE THIS TOPIC: ${focus}` : "";
     
     const isSPFL = track.includes('SPFL') || subject.includes('Language');
     const spflInstruction = isSPFL 
-      ? `CRITICAL SPFL RULE: This is a Foreign Language lesson. ALL examples, vocabulary, and scenarios MUST be presented in the Target Language (Script/Character) followed by [Pronunciation/Pinyin] and (English Translation). E.g., "Ã¤Â½Â Ã¥Â¥Â½ [NÃÂ hÃÂo] (Hello)".` 
+      ? `CRITICAL SPFL RULE: This is a Foreign Language lesson. ALL examples, vocabulary, and scenarios MUST be presented in the Target Language (Script/Character) followed by [Pronunciation/Pinyin] and (English Translation). E.g., "你好 [Nǐ hǎo] (Hello)".` 
       : "";
 
     const prompt = `You are a Senior K-12 Curriculum Specialist. Generate a 1500-word comprehensive review module.
@@ -145,9 +149,7 @@ export class GeminiService {
         const line = lines[i].trim();
         if (!line || line.startsWith('# ')) continue;
         
-        // Skip metadata sections during content parsing
         if (line.startsWith('DICTIONARY:') || line.startsWith('KEY_TERMS:') || line.startsWith('STUDY_TIPS:') || line.startsWith('VISUAL_PROMPT:')) {
-           // Skip ahead to avoid adding dictionary lines as paragraphs
            if (line.startsWith('DICTIONARY:')) {
              while(i < lines.length && !lines[i+1]?.startsWith('KEY_TERMS:') && !lines[i+1]?.startsWith('STUDY_TIPS:')) {
                i++;
