@@ -8,8 +8,9 @@ if (!rootElement) {
 }
 
 const root = createRoot(rootElement);
+// Using React.createElement directly for the entry point to bypass JSX transformation requirements
 root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
+  React.createElement(React.StrictMode, null, 
+    React.createElement(App)
+  )
 );
