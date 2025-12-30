@@ -1,0 +1,7 @@
+{
+  "name": "K-12 MasterReview",
+  "description": "Educational review platform for JHS and SHS.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}
