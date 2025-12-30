@@ -3,7 +3,7 @@ import { LessonContent, LessonSection, ContentBlock, Difficulty, ReviewQuestion,
 
 export class GeminiService {
   async defineTerm(term: string, context: string): Promise<string> {
-    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY || 'FAKE_API_KEY_FOR_DEVELOPMENT' });
     try {
       const response = await ai.models.generateContent({
         model: 'gemini-3-flash-preview',
@@ -18,7 +18,7 @@ export class GeminiService {
   }
 
   async generateVisual(description: string): Promise<string> {
-    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY || 'FAKE_API_KEY_FOR_DEVELOPMENT' });
     try {
       const response = await ai.models.generateContent({
         model: 'gemini-2.5-flash-image',
@@ -47,12 +47,12 @@ export class GeminiService {
     melcCode: string,
     focus?: string
   ): Promise<LessonContent> {
-    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY || 'FAKE_API_KEY_FOR_DEVELOPMENT' });
     const focusPrompt = focus ? `\n\nEMPHASIZE THIS TOPIC: ${focus}` : "";
     
     const isSPFL = track.includes('SPFL') || subject.includes('Language');
     const spflInstruction = isSPFL 
-      ? `CRITICAL SPFL RULE: This is a Foreign Language lesson. ALL examples, vocabulary, and scenarios MUST be presented in the Target Language (Script/Character) followed by [Pronunciation/Pinyin] and (English Translation). E.g., "你好 [Nǐ hǎo] (Hello)".` 
+      ? `CRITICAL SPFL RULE: This is a Foreign Language lesson. ALL examples, vocabulary, and scenarios MUST be presented in the Target Language (Script/Character) followed by [Pronunciation/Pinyin] and (English Translation). E.g., "ä½ å¥½ [NÇ hÇo] (Hello)".` 
       : "";
 
     const prompt = `You are a Senior K-12 Curriculum Specialist. Generate a 1500-word comprehensive review module.
