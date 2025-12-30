@@ -52,7 +52,7 @@ export class GeminiService {
     
     const isSPFL = track.includes('SPFL') || subject.includes('Language');
     const spflInstruction = isSPFL 
-      ? `CRITICAL SPFL RULE: This is a Foreign Language lesson. ALL examples, vocabulary, and scenarios MUST be presented in the Target Language (Script/Character) followed by [Pronunciation/Pinyin] and (English Translation). E.g., "ä½ å¥½ [NÇ hÇo] (Hello)".` 
+      ? `CRITICAL SPFL RULE: This is a Foreign Language lesson. ALL examples, vocabulary, and scenarios MUST be presented in the Target Language (Script/Character) followed by [Pronunciation/Pinyin] and (English Translation). E.g., "Ã¤Â½Â Ã¥Â¥Â½ [NÃÂ hÃÂo] (Hello)".` 
       : "";
 
     const prompt = `You are a Senior K-12 Curriculum Specialist. Generate a 1500-word comprehensive review module.
